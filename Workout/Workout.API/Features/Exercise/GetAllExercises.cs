@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Carter.OpenApi;
+using Microsoft.AspNetCore.Http;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -6,13 +7,16 @@ using System.Threading.Tasks;
 
 namespace Workout.API.Features.Exercise
 {
-    public class GetAllExercises: ICarterModule
+    public class GetAllExercises: CarterModule
     {
-        public void AddRoutes(IEndpointRouteBuilder app)
+        public GetAllExercises() : base(ExerciseConstants.ApiBase) { }
+        
+        public override void AddRoutes(IEndpointRouteBuilder app)
         {
             app
-                .MapGet("api/exercise", async (IMediator mediator) => await mediator.Send(new GetAllExercisesQuery()))
-                .Produces(StatusCodes.Status200OK);
+                .MapGet("/", async (IMediator mediator) => await mediator.Send(new GetAllExercisesQuery()))
+                .Produces<IEnumerable<GetExerciseResponse>>(StatusCodes.Status200OK)
+                .IncludeInOpenApi();
         }
 
         public record GetAllExercisesQuery : IRequest<IEnumerable<GetExerciseResponse>>;
