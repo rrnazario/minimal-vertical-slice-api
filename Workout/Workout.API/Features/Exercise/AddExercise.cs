@@ -2,9 +2,9 @@
 using FluentValidation;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
-using System;
 using System.Threading;
 using System.Threading.Tasks;
+using Workout.API.Features.Exercise.SeedWork;
 
 namespace Workout.API.Features.Exercise
 {

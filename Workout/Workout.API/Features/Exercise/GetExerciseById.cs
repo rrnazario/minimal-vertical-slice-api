@@ -2,33 +2,32 @@
 using Microsoft.AspNetCore.Http;
 using System.Threading;
 using System.Threading.Tasks;
+using Workout.API.Features.Exercise.SeedWork;
 
 namespace Workout.API.Features.Exercise
 {
-    public class GetExerciseByName : CarterModule
+    public class GetExerciseById : CarterModule
     {
-        public GetExerciseByName()
+        public GetExerciseById()
             : base(ExerciseConstants.ApiBase) { }
-        
+
         public override void AddRoutes(IEndpointRouteBuilder app)
         {
             app
                 .MapGet("{id:int}", async (IMediator mediator, int id) => await mediator.Send(new GetAllExerciseByIdQuery(id)))
-                .Produces<GetExerciseByIdResponse>(StatusCodes.Status200OK)
+                .Produces<GetExerciseResponse>(StatusCodes.Status200OK)
                 .Produces(StatusCodes.Status404NotFound)
                 .IncludeInOpenApi();
         }
 
-        public record GetAllExerciseByIdQuery(int Id) : IRequest<GetExerciseByIdResponse>;
-
-        public record GetExerciseByIdResponse(string Name, string Description);
+        public record GetAllExerciseByIdQuery(int Id) : IRequest<GetExerciseResponse>;
 
         public class GetExerciseByIdResponseHandler
-            : IRequestHandler<GetAllExerciseByIdQuery, GetExerciseByIdResponse>
+            : IRequestHandler<GetAllExerciseByIdQuery, GetExerciseResponse>
         {
-            public Task<GetExerciseByIdResponse> Handle(GetAllExerciseByIdQuery request, CancellationToken cancellationToken)
+            public Task<GetExerciseResponse> Handle(GetAllExerciseByIdQuery request, CancellationToken cancellationToken)
             {
-                var result = new GetExerciseByIdResponse(request.Id.ToString(), $"ID is {request.Id}");
+                var result = new GetExerciseResponse(request.Id.ToString(), $"ID is {request.Id}");
 
                 return Task.FromResult(result);
             }

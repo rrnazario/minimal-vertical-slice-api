@@ -4,10 +4,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Workout.API.Features.Exercise.SeedWork;
 
 namespace Workout.API.Features.Exercise
 {
-    public class GetAllExercises: CarterModule
+    public partial class GetAllExercises: CarterModule
     {
         public GetAllExercises() : base(ExerciseConstants.ApiBase) { }
         
@@ -20,8 +21,6 @@ namespace Workout.API.Features.Exercise
         }
 
         public record GetAllExercisesQuery : IRequest<IEnumerable<GetExerciseResponse>>;
-
-        public record GetExerciseResponse(string Name, string Description);
 
         public class GetAllExercisesQueryHandle
             : IRequestHandler<GetAllExercisesQuery, IEnumerable<GetExerciseResponse>>
