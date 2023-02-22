@@ -8,20 +8,23 @@ using Workout.API.Features.Exercise.SeedWork;
 
 namespace Workout.API.Features.Exercise
 {
-    public class AddExercise : CarterModule
+    public class AddExercise : BaseModule
     {
         public AddExercise() : base(ExerciseConstants.ApiBase) { }
 
         public override void AddRoutes(IEndpointRouteBuilder app)
         {
+            base.AddRoutes(app);
+            
             app.MapPost<AddExerciseCommand>("/", async (IMediator mediator, AddExerciseCommand command) =>
             {
                 await mediator.Send(command);
 
                 return TypedResults.NoContent();
-            })
-                .Produces(StatusCodes.Status422UnprocessableEntity)
-                .IncludeInOpenApi();
+            })                
+                .Produces(StatusCodes.Status422UnprocessableEntity)                
+                .IncludeInOpenApi()
+                .WithApiVersionSet(apiVersionSet);
         }
 
         public record AddExerciseCommand(string Name, string Description) : IRequest;
